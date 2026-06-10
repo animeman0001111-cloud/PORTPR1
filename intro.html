@@ -21,7 +21,200 @@ body{
   background:
   radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
   radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
-  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  radial-<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio — Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--card:#fffdfb;--text:#1b1b1b;--muted:#666;--accent:#9b5b3e;--border:#ddd2c5}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 20%,rgba(255,220,190,.55),transparent 30%),radial-gradient(circle at 85% 15%,rgba(220,235,255,.45),transparent 30%),linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);background-size:100% 100%,100% 100%,400% 400%;animation:warmFlow 24s ease infinite;color:var(--text);overflow-x:hidden}
+@keyframes warmFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+body::before{content:"";position:fixed;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);top:-200px;right:-200px;filter:blur(80px);animation:float1 15s ease-in-out infinite;pointer-events:none}
+body::after{content:"";position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);bottom:-200px;left:-200px;filter:blur(80px);animation:float2 18s ease-in-out infinite;pointer-events:none}
+@keyframes float1{50%{transform:translate(-80px,60px)}}@keyframes float2{50%{transform:translate(80px,-60px)}}
+nav{position:fixed;top:0;left:0;right:0;height:75px;display:flex;justify-content:space-between;align-items:center;padding:0 7%;background:rgba(250,247,242,.92);border-bottom:1px solid var(--border);z-index:1000}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px}.nav-links a{text-decoration:none;color:var(--text);font-size:.9rem;transition:color .2s}.nav-links a:hover{color:var(--accent)}
+@media(max-width:700px){.nav-links{display:none}}
+.burger{display:none;cursor:pointer;background:none;border:none;width:38px;height:38px;position:relative;z-index:1100;padding:0}
+@media(max-width:700px){.burger{display:block}}
+.burger span{position:absolute;left:4px;right:4px;height:1.5px;background:var(--text);border-radius:2px;transition:all .35s cubic-bezier(.4,0,.2,1)}
+.burger span:nth-child(1){top:10px}.burger span:nth-child(2){top:18px}.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+.drawer-overlay{position:fixed;inset:0;z-index:1049;background:rgba(27,18,8,.35);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.drawer-overlay.show{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:1050;width:min(300px,85vw);background:var(--card);border-left:1px solid var(--border);padding:90px 2.5rem 3rem;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer a{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);text-decoration:none;padding:.85rem 0;border-bottom:1px solid var(--border);transition:color .2s,padding-left .2s;display:block}
+.drawer a:last-of-type{border-bottom:none}.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{margin-top:auto;font-size:.72rem;color:var(--muted);letter-spacing:.05em}
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 7% 80px}
+.hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px;font-size:.8rem}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,5rem);line-height:1.05;margin-bottom:20px}
+.hero-desc{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px;flex-wrap:wrap}
+.btn{text-decoration:none;padding:14px 24px;border-radius:6px;border:1px solid var(--border);font-size:.9rem;color:var(--text)}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card{background:var(--card);border:1px solid var(--border);padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+.card h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:18px}
+.card p{padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:var(--muted)}
+.card p:last-child{border-bottom:none}
+section{padding:90px 7%}
+.container{max-width:1100px;margin:auto}
+.section-title{font-family:'Playfair Display',serif;font-size:2.4rem;margin-bottom:10px}
+.section-sub{color:var(--muted);margin-bottom:40px;line-height:1.7}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px}
+.module{background:var(--card);border:1px solid var(--border);padding:30px;border-radius:18px;box-shadow:0 8px 24px rgba(80,60,40,.05);transition:.3s;text-decoration:none;display:block;color:var(--text)}
+.module:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(80,60,40,.1)}
+.module .num{font-size:2.2rem;font-family:'Playfair Display',serif;color:var(--accent);margin-bottom:10px}
+.module h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:8px}
+.module p{font-size:.88rem;color:var(--muted);line-height:1.7}
+.module .arrow{margin-top:18px;color:var(--accent);font-size:.85rem}
+.team-section{background:rgba(255,255,255,.35)}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.member{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:14px;text-align:center}
+.member .avatar{width:52px;height:52px;border-radius:50%;background:rgba(155,91,62,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--accent)}
+.member h4{font-size:.95rem;margin-bottom:4px}
+.member p{font-size:.82rem;color:var(--muted)}
+.quote-section{text-align:center;padding:90px 7%;font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--accent);line-height:1.5}
+.quote-section small{display:block;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--muted);margin-top:12px;font-style:italic}
+footer{text-align:center;padding:35px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s,transform .9s}
+.reveal.active{opacity:1;transform:none}
+.info-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.tag{background:rgba(155,91,62,.09);color:var(--accent);border-radius:4px;padding:4px 12px;font-size:.8rem}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Engineering <span>Exploration</span></div>
+  <div class="nav-links">
+    <a href="index.html">Portfolio</a>
+    <a href="page1-intro.html">Introduction</a>
+    <a href="page2-management.html">Project Mgmt</a>
+    <a href="page3-sustainability.html">Sustainability</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <a href="index.html">Portfolio</a>
+  <a href="page1-intro.html">Introduction</a>
+  <a href="page2-management.html">Project Mgmt</a>
+  <a href="page3-sustainability.html">Sustainability</a>
+  <p class="drawer-footer">Engineering Exploration · 2026</p>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Engineering Exploration · KLE Technological University</div>
+      <h1>My Portfolio</h1>
+      <p class="hero-desc">A first-year Computer Science Engineering student's journey through curiosity, problem-solving, and hands-on exploration of engineering concepts — from fundamentals to sustainability.</p>
+      <div class="info-row">
+        <span class="tag">Rachel Gama</span>
+        <span class="tag">Roll No. 447</span>
+        <span class="tag">Division D</span>
+        <span class="tag">USN 01FE25BCS268</span>
+        <span class="tag">Team 13</span>
+      </div>
+      <div class="btns">
+        <a class="btn primary" href="#modules">Explore Modules</a>
+        <a class="btn" href="page1-intro.html">Start Reading</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Portfolio Contents</h3>
+      <p>1 · Introduction To Engineering</p>
+      <p>2 · Project Management</p>
+      <p>3 · Sustainability in Engineering</p>
+      <p>Mentor: N. AkshayKumar Sir</p>
+      <p>Project: INSECTRONICS — Ladybug</p>
+    </div>
+  </div>
+</section>
+
+<section id="modules">
+  <div class="container">
+    <h2 class="section-title reveal">Course Modules</h2>
+    <p class="section-sub reveal">Three modules explored across the Engineering Exploration course, each building toward applied engineering practice.</p>
+    <div class="modules-grid">
+      <a class="module reveal" href="page1-intro.html">
+        <div class="num">01</div>
+        <h3>Introduction to Engineering</h3>
+        <p>Ice-breaking activities, the Bangalore sewage problem case study, and a reverse engineering activity.</p>
+        <div class="arrow">Read more →</div>
+      </a>
+      <a class="module reveal" href="page2-management.html">
+        <div class="num">02</div>
+        <h3>Project Management</h3>
+        <p>Agile, Scrum, Sprint frameworks — and hands-on class activities including paper planes and car building.</p>
+        <div class="arrow">Read more →</div>
+      </a>
+      <a class="module reveal" href="page3-sustainability.html">
+        <div class="num">03</div>
+        <h3>Sustainability in Engineering</h3>
+        <p>UN Sustainable Development Goals, Life Cycle Assessment, Carbon Footprint, and Embodied Energy.</p>
+        <div class="arrow">Read more →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="team-section">
+  <div class="container">
+    <h2 class="section-title reveal">Team 13</h2>
+    <p class="section-sub reveal">A group of four first-year engineering students who collaborated across all activities.</p>
+    <div class="team-grid">
+      <div class="member reveal">
+        <div class="avatar">R</div>
+        <h4>Rachel Gama</h4>
+        <p>Roll No. 447</p>
+      </div>
+      <div class="member reveal">
+        <div class="avatar">V</div>
+        <h4>N. B. Varun</h4>
+        <p>Roll No. 451</p>
+      </div>
+      <div class="member reveal">
+        <div class="avatar">P</div>
+        <h4>Prajwal Patil</h4>
+        <p>Roll No. 436</p>
+      </div>
+      <div class="member reveal">
+        <div class="avatar">P</div>
+        <h4>Pradeep M</h4>
+        <p>Roll No. 437</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-section reveal">
+  "A single leaf working alone provides no shade."
+  <small>— Chuck Page</small>
+</div>
+
+<footer>© 2026 Engineering Exploration Portfolio · Rachel Gama · KLE Technological University</footer>
+
+<script>
+const burger=document.getElementById('burger'),drawer=document.getElementById('drawer'),overlay=document.getElementById('overlay');
+function open_(){burger.classList.add('open');drawer.classList.add('open');overlay.classList.add('show');document.body.style.overflow='hidden'}
+function close_(){burger.classList.remove('open');drawer.classList.remove('open');overlay.classList.remove('show');document.body.style.overflow=''}
+burger.addEventListener('click',()=>drawer.classList.contains('open')?close_():open_());
+overlay.addEventListener('click',close_);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close_()});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',close_));
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active')})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
   linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
   background-size:100% 100%,100% 100%,100% 100%,400% 400%;
   animation:warmFlow 24s ease infinite;
