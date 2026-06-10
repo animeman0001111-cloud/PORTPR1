@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1. Introduction To Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";
+  position:fixed;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;
+  filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;
+  pointer-events:none;
+}
+body::after{
+  content:"";
+  position:fixed;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;
+  filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+ position:fixed;top:0;left:0;right:0;height:75px;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:0 7%;
+ background:rgba(250,247,242,.92);
+ border-bottom:1px solid var(--border);
+ z-index:1000;
+ transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){
+ .hero-inner{grid-template-columns:1fr}
+}
+.hero{
+ min-height:100vh;
+ display:flex;align-items:center;
+ padding:120px 7% 80px;
+}
+.hero-inner{
+ max-width:1200px;margin:auto;
+ display:grid;grid-template-columns:1.2fr .8fr;
+ gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(3rem,6vw,5.5rem);
+ line-height:1.05;margin-bottom:20px;
+}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px}
+.btn{
+ text-decoration:none;padding:14px 24px;border-radius:6px;
+ border:1px solid var(--border)
+}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card,.module,.project{
+ background:var(--card);
+ border:1px solid var(--border);
+}
+.card{padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{
+ font-family:'Playfair Display',serif;
+ font-size:2.6rem;margin-bottom:10px
+}
+.section-sub{color:var(--muted);margin-bottom:40px}
+.modules-grid,.project-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:25px;
+}
+.module,.project{padding:30px;transition:.3s;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.05)}
+.module:hover,.project:hover{transform:translateY(-5px)}
+.num{font-size:2rem;color:var(--accent);margin-bottom:10px}
+.journey{background:rgba(255,255,255,.35)}
+.timeline{border-left:2px solid var(--accent);padding-left:30px}
+.timeline-item{margin-bottom:30px}
+.quote{
+ text-align:center;padding:110px 7%;
+ font-family:'Playfair Display',serif;
+ font-size:2rem;color:var(--accent)
+}
+footer{
+ text-align:center;padding:35px;
+ border-top:1px solid var(--border);color:var(--muted)
+}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+/* HAMBURGER BUTTON */
+.burger{
+  display:block;
+  cursor:pointer;
+  background:none;
+  border:none;
+  width:38px;height:38px;
+  position:relative;
+  z-index:1100;
+  padding:0;
+}
+.burger span{
+  position:absolute;
+  left:4px;right:4px;
+  height:1.5px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+/* OVERLAY */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1049;
+  background:rgba(27,18,8,.35);
+  opacity:0;visibility:hidden;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
+}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+/* SLIDE-IN DRAWER */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1050;
+  width:min(300px,85vw);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:90px 2.5rem 3rem;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.drawer.open{transform:translateX(0)}
+.drawer a{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text);text-decoration:none;
+  padding:0.85rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s,padding-left 0.2s;
+  display:block;
+}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{
+  margin-top:auto;
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.05em;
+}
+
+/* PAGE-SPECIFIC */
+.topic-block{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:40px;
+  margin-bottom:30px;
+  box-shadow:0 10px 30px rgba(80,60,40,.05);
+}
+.topic-block h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.5rem;
+  color:var(--accent);
+  margin-bottom:15px;
+}
+.topic-block p{line-height:1.9;color:var(--muted);margin-bottom:12px}
+.topic-block p:last-child{margin-bottom:0}
+.reflection-box{
+  background:rgba(155,91,62,.06);
+  border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;
+  padding:25px 30px;
+  margin-top:20px;
+}
+.reflection-box .label{
+  font-size:.7rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;
+}
+.reflection-box p{line-height:1.9;color:var(--muted)}
+.tag{
+  display:inline-block;
+  background:rgba(155,91,62,.1);
+  color:var(--accent);
+  font-size:.75rem;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:18px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Engineering <span>Exploration</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="#icebreaker">Icebreaker</a>
+    <a href="#sewage">Sewage Problem</a>
+    <a href="#reverse">Reverse Engg.</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="index.html">Home</a>
+  <a href="#icebreaker">Icebreaker</a>
+  <a href="#sewage">Sewage Problem</a>
+  <a href="#reverse">Reverse Engg.</a>
+  <p class="drawer-footer">Engineering Exploration · 2026</p>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 01</div>
+      <h1>Introduction To Engineering</h1>
+      <p>Exploring the foundations of engineering through hands-on activities, real-world problems, and collaborative discovery.</p>
+      <div class="btns">
+        <a class="btn primary" href="#icebreaker">Activities</a>
+        <a class="btn" href="project-management.html">Next Module →</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Topics Covered</h3><br>
+      <p>• Ice Breaking Activity</p>
+      <p>• Bangalore Sewage Problem</p>
+      <p>• Reverse Engineering Activity</p>
+      <p>• Observation & Teamwork</p>
+    </div>
+  </div>
+</section>
+
+<!-- ICE BREAKER -->
+<section id="icebreaker">
+  <div class="container">
+    <div class="eyebrow reveal" style="color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px">Activity 01</div>
+    <h2 class="section-title reveal">Ice Breaking Activity</h2>
+    <p class="section-sub reveal">A team observation and communication challenge using engineering cards.</p>
+
+    <div class="topic-block reveal">
+      <div class="tag">What We Did</div>
+      <p>When the cards were given to us, we first noticed the pictures on each card. One of our team members noticed the numbers on the cards, and we started arranging them in order — by which we came to know about the missing card and duplicate card.</p>
+      <p>Once we knew which were the duplicate cards, we started approaching other teams to see if they had cards to exchange with us. Two members from our team who were good at communication began approaching different teams, and we collected many cards.</p>
+      <div class="reflection-box">
+        <div class="label">Reflection</div>
+        <p>The ice breaking activity was interesting and helped our team work together. By carefully observing the cards, we noticed the numbers and arranged them to find the missing and duplicate cards. We then communicated with other teams to exchange the cards. This activity taught us the importance of good observation, communication, teamwork, and time management to complete a task successfully.</p>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+      <div class="module reveal">
+        <div class="num">👁</div>
+        <h3>Observation</h3>
+        <p>Spotting numbers and patterns to identify missing and duplicate cards.</p>
+      </div>
+      <div class="module reveal">
+        <div class="num">🤝</div>
+        <h3>Communication</h3>
+        <p>Reaching out to other teams confidently to exchange cards.</p>
+      </div>
+      <div class="module reveal">
+        <div class="num">⏱</div>
+        <h3>Time Management</h3>
+        <p>Completing the task efficiently within the available time frame.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEWAGE PROBLEM -->
+<section class="journey" id="sewage">
+  <div class="container">
+    <div class="eyebrow reveal" style="color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px">Case Study</div>
+    <h2 class="section-title reveal">Bangalore Sewage Problem</h2>
+    <p class="section-sub reveal">Understanding how rapid urban growth creates real engineering challenges.</p>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="topic-block">
+          <h3>1. Rapid Urbanization</h3>
+          <p>The population of Bangalore has increased rapidly over the years due to migration and urban development. However, the city's infrastructure has not expanded at the same pace. Because of this, existing sewage systems are overloaded and unable to manage the large amount of waste produced every day, leading to untreated sewage overflowing into lakes, drains, and nearby water bodies.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="topic-block">
+          <h3>2. Poor Drainage Network</h3>
+          <p>Many parts of the city still do not have proper underground drainage systems. In some areas, the drainage networks are old, damaged, or poorly maintained. Additionally, illegal sewage connections often discharge wastewater directly into stormwater drains — meant only for rainwater — causing pollution and foul smell in the surroundings.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="topic-block">
+          <h3>3. Health Hazards</h3>
+          <p>Improper sewage management creates serious health risks for people living nearby. Contaminated water can spread water-borne diseases such as cholera, typhoid, and dysentery. Poor sanitation conditions especially affect low-income communities where access to clean water and proper sanitation facilities is limited.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="topic-block">
+          <h3>Possible Solutions</h3>
+          <p>The city needs to expand and modernize sewage treatment plants so that wastewater can be treated effectively. Treated wastewater can be reused for gardening, industrial use, and construction. The government should also strictly monitor and prevent illegal sewage connections, while public awareness and community participation are essential to maintain clean drains.</p>
+          <div class="reflection-box">
+            <div class="label">Reflection</div>
+            <p>Learning about the Bangalore sewage problem made me understand how rapid urban growth can create serious environmental and health issues if infrastructure does not develop at the same pace. It showed me the importance of proper sewage management, government regulations, and public responsibility. Sustainable solutions like wastewater treatment and reuse are necessary for the healthy development of a city.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVERSE ENGINEERING -->
+<section id="reverse">
+  <div class="container">
+    <div class="eyebrow reveal" style="color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px">Activity 02</div>
+    <h2 class="section-title reveal">Reverse Engineering Activity</h2>
+    <p class="section-sub reveal">Disassembling and analysing existing products to understand how they were designed and built.</p>
+
+    <div class="topic-block reveal">
+      <div class="tag">What We Explored</div>
+      <p>Reverse engineering involves taking apart a finished product and working backwards to understand its design, components, and how it functions. This activity gave us a hands-on look at how engineers think when they encounter an existing system.</p>
+      <p>By examining the product's parts, materials, and assembly, we were able to understand the design decisions made by the original engineers — and consider how the product could potentially be improved.</p>
+      <div class="reflection-box">
+        <div class="label">Key Takeaway</div>
+        <p>Reverse engineering teaches us that every engineered product is the result of deliberate decisions. Understanding those decisions helps us become better designers and problem-solvers ourselves.</p>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+      <div class="module reveal">
+        <div class="num">🔩</div>
+        <h3>Disassembly</h3>
+        <p>Carefully taking apart a product to observe its internal components.</p>
+      </div>
+      <div class="module reveal">
+        <div class="num">🔍</div>
+        <h3>Analysis</h3>
+        <p>Identifying materials, mechanisms, and the purpose of each part.</p>
+      </div>
+      <div class="module reveal">
+        <div class="num">💡</div>
+        <h3>Insight</h3>
+        <p>Drawing conclusions about design choices and opportunities for improvement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote reveal">"Every engineered solution begins with a deep understanding of the problem."</div>
+
+<footer>
+  © 2026 Engineering Exploration Portfolio &nbsp;·&nbsp;
+  <a href="index.html" style="color:var(--accent);text-decoration:none">Home</a> &nbsp;·&nbsp;
+  <a href="project-management.html" style="color:var(--accent);text-decoration:none">Module 02 →</a>
+</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+ const nav=document.querySelector("nav");
+ if(scrollY>50){
+   nav.style.boxShadow="0 4px 20px rgba(0,0,0,.05)";
+ } else {
+   nav.style.boxShadow="none";
+ }
+});
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+   if(e.isIntersecting)e.target.classList.add("active");
+ });
+},{threshold:.15});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// HAMBURGER MENU
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+
+function openMenu(){
+  burger.classList.add('open');
+  drawer.classList.add('open');
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+  burger.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  burger.classList.remove('open');
+  drawer.classList.remove('open');
+  overlay.classList.remove('show');
+  document.body.style.overflow='';
+  burger.setAttribute('aria-expanded','false');
+}
+burger.addEventListener('click',()=>{
+  drawer.classList.contains('open')?closeMenu():openMenu();
+});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu();
+});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
