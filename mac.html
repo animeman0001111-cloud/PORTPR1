@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mechanisms – Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";
+  position:fixed;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;
+  filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;
+  pointer-events:none;
+}
+body::after{
+  content:"";
+  position:fixed;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;
+  filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+ position:fixed;top:0;left:0;right:0;height:75px;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:0 7%;
+ background:rgba(250,247,242,.92);
+ border-bottom:1px solid var(--border);
+ z-index:1000;
+ transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){
+ .hero-inner{grid-template-columns:1fr}
+}
+.hero{
+ min-height:100vh;
+ display:flex;align-items:center;
+ padding:120px 7% 80px;
+}
+.hero-inner{
+ max-width:1200px;margin:auto;
+ display:grid;grid-template-columns:1.2fr .8fr;
+ gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(3rem,6vw,5.5rem);
+ line-height:1.05;margin-bottom:20px;
+}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px}
+.btn{
+ text-decoration:none;padding:14px 24px;border-radius:6px;
+ border:1px solid var(--border)
+}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card,.module,.project{
+ background:var(--card);
+ border:1px solid var(--border);
+}
+.card{padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{
+ font-family:'Playfair Display',serif;
+ font-size:2.6rem;margin-bottom:10px
+}
+.section-sub{color:var(--muted);margin-bottom:40px}
+.modules-grid,.project-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:25px;
+}
+.module,.project{padding:30px;transition:.3s;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.05)}
+.module:hover,.project:hover{transform:translateY(-5px)}
+.num{font-size:2rem;color:var(--accent);margin-bottom:10px}
+.journey{background:rgba(255,255,255,.35)}
+.timeline{border-left:2px solid var(--accent);padding-left:30px}
+.timeline-item{margin-bottom:30px}
+.quote{
+ text-align:center;padding:110px 7%;
+ font-family:'Playfair Display',serif;
+ font-size:2rem;color:var(--accent)
+}
+footer{
+ text-align:center;padding:35px;
+ border-top:1px solid var(--border);color:var(--muted)
+}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+/* HAMBURGER BUTTON */
+.burger{
+  display:block;
+  cursor:pointer;
+  background:none;
+  border:none;
+  width:38px;height:38px;
+  position:relative;
+  z-index:1100;
+  padding:0;
+}
+.burger span{
+  position:absolute;
+  left:4px;right:4px;
+  height:1.5px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+/* OVERLAY */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1049;
+  background:rgba(27,18,8,.35);
+  opacity:0;visibility:hidden;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
+}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+/* SLIDE-IN DRAWER */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1050;
+  width:min(300px,85vw);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:90px 2.5rem 3rem;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.drawer.open{transform:translateX(0)}
+.drawer a{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text);text-decoration:none;
+  padding:0.85rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s,padding-left 0.2s;
+  display:block;
+}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{
+  margin-top:auto;
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.05em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">Engineering <span>Exploration</span></div>
+<div class="nav-links"></div>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="intro.html">About us</a>
+  <a href="introduction.html">Introduction</a>
+  <a href="sus.html">Sustainability in Engineering</a>
+  <a href="exdes.html">Engineering Design</a>
+  <a href="mac.html">Mechanisms</a>
+  <a href="plat.html">Platform-Based</a>
+  <a href="eth.html">Engineering Ethics</a>
+  <a href="learn.html">Learnings</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+<div>
+  <div class="eyebrow">Module 5</div>
+  <h1>Mechanisms</h1>
+  <p>Exploring linkage mechanisms, four-bar mechanisms, and their real-world applications through hands-on activities and digital simulations.</p>
+  <div class="btns">
+    <a class="btn primary" href="#linkage">Explore</a>
+    <a class="btn" href="#slider">Activities</a>
+  </div>
+</div>
+<div class="card">
+  <h3>Topics Covered</h3><br>
+  <p>• Linkage Mechanism</p>
+  <p>• Four-Bar Mechanism</p>
+  <p>• Simulation (Linkage Software)</p>
+  <p>• Slider-Crank Activity</p>
+  <p>• MSBS of Chassis</p>
+</div>
+</div>
+</section>
+
+<!-- LINKAGE MECHANISM -->
+<section id="linkage">
+<div class="container">
+  <h2 class="section-title reveal">Linkage Mechanism</h2>
+  <p class="section-sub reveal">A mechanical arrangement of rigid bodies (links) connected by joints to transmit motion and force from one part of a machine to another in a desired manner.</p>
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">01</div>
+      <h3>Links</h3>
+      <p style="margin-top:10px;color:var(--muted)">Rigid members that transmit motion and force through the mechanism.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">02</div>
+      <h3>Joints</h3>
+      <p style="margin-top:10px;color:var(--muted)">Kinematic pairs — connections between links that allow relative motion (e.g., pin joints, sliding joints).</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">03</div>
+      <h3>Frame</h3>
+      <p style="margin-top:10px;color:var(--muted)">The fixed link — the stationary part that supports the entire mechanism.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">04</div>
+      <h3>Input Link</h3>
+      <p style="margin-top:10px;color:var(--muted)">The driver — the link where motion or force is applied to start the mechanism.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">05</div>
+      <h3>Output Link</h3>
+      <p style="margin-top:10px;color:var(--muted)">The follower — the link that produces the required output motion.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- APPLICATIONS -->
+<section class="journey" id="applications">
+<div class="container">
+  <h2 class="section-title reveal">Applications</h2>
+  <p class="section-sub reveal">Real-world uses of linkage mechanisms across everyday engineering systems.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <h3>Automobile Steering System</h3>
+      <p>Converts steering wheel rotation into precise wheel movement for directional control.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Windshield Wipers</h3>
+      <p>Transform rotary motor motion into oscillatory sweeping motion across the windshield.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Bicycle Pedals &amp; Chains</h3>
+      <p>Transmit human pedalling effort into continuous wheel rotation for forward movement.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOUR-BAR MECHANISM -->
+<section id="fourbar">
+<div class="container">
+  <h2 class="section-title reveal">Four-Bar Mechanism</h2>
+  <p class="section-sub reveal">Made up of four rigid links connected by four turning pairs (revolute joints) — one of the most common and fundamental linkage types.</p>
+
+  <div class="card reveal" style="margin-bottom:35px">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Parts of a Four-Bar Mechanism</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:10px">
+      <div><strong style="color:var(--accent)">1. Frame</strong><p style="color:var(--muted);margin-top:4px">The stationary fixed link.</p></div>
+      <div><strong style="color:var(--accent)">2. Input Link (Crank)</strong><p style="color:var(--muted);margin-top:4px">The link that receives motion.</p></div>
+      <div><strong style="color:var(--accent)">3. Coupler Link</strong><p style="color:var(--muted);margin-top:4px">Connects the crank and the output link.</p></div>
+      <div><strong style="color:var(--accent)">4. Output Link (Rocker)</strong><p style="color:var(--muted);margin-top:4px">The link that delivers output motion.</p></div>
+    </div>
+  </div>
+
+  <div class="project-grid">
+    <div class="project reveal">
+      <h3>Crank-Rocker</h3>
+      <p style="margin-top:12px;color:var(--muted)">One link (the crank) makes a complete rotation while the other (the rocker) oscillates back and forth.</p>
+      <p style="margin-top:10px;font-size:.85rem;color:var(--accent);font-weight:500">Example: Windshield wiper system</p>
+    </div>
+    <div class="project reveal">
+      <h3>Double Crank</h3>
+      <p style="margin-top:12px;color:var(--muted)">Both links connected to the frame rotate completely, enabling continuous rotation on both sides.</p>
+      <p style="margin-top:10px;font-size:.85rem;color:var(--accent);font-weight:500">Example: Bicycle chain / engine timing gear</p>
+    </div>
+    <div class="project reveal">
+      <h3>Double Rocker</h3>
+      <p style="margin-top:12px;color:var(--muted)">Both the input and output links only oscillate and do not make full rotations.</p>
+      <p style="margin-top:10px;font-size:.85rem;color:var(--accent);font-weight:500">Example: Rocking chair, robotic joints</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SIMULATION -->
+<section class="journey" id="simulation">
+<div class="container">
+  <h2 class="section-title reveal">Simulation of Linkage Mechanism</h2>
+  <p class="section-sub reveal">This simulation was performed using Linkage Software to model and visualise mechanism behaviour.</p>
+  <div class="card reveal" style="max-width:740px">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">What We Did</h3>
+    <p style="line-height:1.9;color:var(--muted)">Using Linkage Software, the motion paths of each link were traced and verified against theoretical predictions. The simulation allowed us to observe how the input crank's rotation translates into rocker oscillation, confirming the kinematic relationships learned in theory and revealing the coupler's path through space.</p>
+  </div>
+</div>
+</section>
+
+<!-- SLIDER-CRANK ACTIVITY -->
+<section id="slider">
+<div class="container">
+  <h2 class="section-title reveal">Slider-Crank Mechanism Activity</h2>
+  <p class="section-sub reveal">Hands-on activity to understand how rotary motion is converted into linear motion.</p>
+  <div class="card reveal" style="max-width:750px">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Reflection</h3>
+    <p style="line-height:1.9;color:var(--muted)">The slider–crank mechanism activity helped me understand how rotary motion is converted into linear motion using simple mechanical components. By observing the interaction between the crank, connecting rod, and slider, I was able to clearly visualise the kinematic relationship that is often difficult to grasp from theory alone.</p>
+  </div>
+</div>
+</section>
+
+<!-- MSBS OF CHASSIS -->
+<section class="journey" id="msbs">
+<div class="container">
+  <h2 class="section-title reveal">MSBS of Chassis</h2>
+  <p class="section-sub reveal">Understanding linkage mechanisms and volumetric methods together makes engineering calculations more precise and design decisions more effective.</p>
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">⚙</div>
+      <h3>Linkage Mechanisms</h3>
+      <p style="margin-top:10px;color:var(--muted)">Show how motion is transmitted and transformed (rotary ↔ oscillatory ↔ linear). Allow engineers to derive speed ratios, torque requirements, and force distribution across joints.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">📐</div>
+      <h3>Volumetric Methods</h3>
+      <p style="margin-top:10px;color:var(--muted)">Estimate component mass by calculating volume × material density. These mass values feed directly into inertia and load calculations.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🏗</div>
+      <h3>Chassis Impact</h3>
+      <p style="margin-top:10px;color:var(--muted)">Accurate mass estimation prevents overdesign (too heavy) or underdesign (too weak). Ensures load paths are realistic, improving structural efficiency and durability.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">⚡</div>
+      <h3>Actuator Impact</h3>
+      <p style="margin-top:10px;color:var(--muted)">Correct torque and speed calculations help select motors that match mechanism demands, preventing energy waste, overheating, or mechanical failure.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="quote reveal">"Together, these methods ensure that mass, speed, and torque are derived from geometry, material properties, and kinematics — not guesswork."</div>
+
+<footer>© 2026 Engineering Exploration Portfolio</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+ const nav=document.querySelector("nav");
+ if(scrollY>50){
+   nav.style.boxShadow="0 4px 20px rgba(0,0,0,.05)";
+ } else {
+   nav.style.boxShadow="none";
+ }
+});
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+   if(e.isIntersecting)e.target.classList.add("active");
+ });
+},{threshold:.15});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// HAMBURGER MENU
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+
+function openMenu(){
+  burger.classList.add('open');
+  drawer.classList.add('open');
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+  burger.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  burger.classList.remove('open');
+  drawer.classList.remove('open');
+  overlay.classList.remove('show');
+  document.body.style.overflow='';
+  burger.setAttribute('aria-expanded','false');
+}
+burger.addEventListener('click',()=>{
+  drawer.classList.contains('open')?closeMenu():openMenu();
+});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu();
+});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
