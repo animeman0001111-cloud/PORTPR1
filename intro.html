@@ -88,6 +88,70 @@ footer{text-align:center;padding:35px;border-top:1px solid var(--border);color:v
 .reveal.active{opacity:1;transform:none}
 .info-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
 .tag{background:rgba(155,91,62,.09);color:var(--accent);border-radius:4px;padding:4px 12px;font-size:.8rem}
+  /* HAMBURGER BUTTON */
+.burger{
+  display:block;
+  cursor:pointer;
+  background:none;
+  border:none;
+  width:38px;height:38px;
+  position:relative;
+  z-index:1100;
+  padding:0;
+}
+.burger span{
+  position:absolute;
+  left:4px;right:4px;
+  height:1.5px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+/* OVERLAY */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1049;
+  background:rgba(27,18,8,.35);
+  opacity:0;visibility:hidden;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
+}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+/* SLIDE-IN DRAWER */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1050;
+  width:min(300px,85vw);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:90px 2.5rem 3rem;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.drawer.open{transform:translateX(0)}
+.drawer a{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text);text-decoration:none;
+  padding:0.85rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s,padding-left 0.2s;
+  display:block;
+}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{
+  margin-top:auto;
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.05em;
+}
+
 </style>
 </head>
 <body>
