@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnings – Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";
+  position:fixed;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;
+  filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;
+  pointer-events:none;
+}
+body::after{
+  content:"";
+  position:fixed;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;
+  filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+ position:fixed;top:0;left:0;right:0;height:75px;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:0 7%;
+ background:rgba(250,247,242,.92);
+ border-bottom:1px solid var(--border);
+ z-index:1000;
+ transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){
+ .hero-inner{grid-template-columns:1fr}
+}
+.hero{
+ min-height:100vh;
+ display:flex;align-items:center;
+ padding:120px 7% 80px;
+}
+.hero-inner{
+ max-width:1200px;margin:auto;
+ display:grid;grid-template-columns:1.2fr .8fr;
+ gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(3rem,6vw,5.5rem);
+ line-height:1.05;margin-bottom:20px;
+}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px}
+.btn{
+ text-decoration:none;padding:14px 24px;border-radius:6px;
+ border:1px solid var(--border)
+}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card,.module,.project{
+ background:var(--card);
+ border:1px solid var(--border);
+}
+.card{padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{
+ font-family:'Playfair Display',serif;
+ font-size:2.6rem;margin-bottom:10px
+}
+.section-sub{color:var(--muted);margin-bottom:40px}
+.modules-grid,.project-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:25px;
+}
+.module,.project{padding:30px;transition:.3s;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.05)}
+.module:hover,.project:hover{transform:translateY(-5px)}
+.num{font-size:2rem;color:var(--accent);margin-bottom:10px}
+.journey{background:rgba(255,255,255,.35)}
+.timeline{border-left:2px solid var(--accent);padding-left:30px}
+.timeline-item{margin-bottom:30px}
+.quote{
+ text-align:center;padding:110px 7%;
+ font-family:'Playfair Display',serif;
+ font-size:2rem;color:var(--accent)
+}
+footer{
+ text-align:center;padding:35px;
+ border-top:1px solid var(--border);color:var(--muted)
+}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+/* HAMBURGER BUTTON */
+.burger{
+  display:block;
+  cursor:pointer;
+  background:none;
+  border:none;
+  width:38px;height:38px;
+  position:relative;
+  z-index:1100;
+  padding:0;
+}
+.burger span{
+  position:absolute;
+  left:4px;right:4px;
+  height:1.5px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+/* OVERLAY */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1049;
+  background:rgba(27,18,8,.35);
+  opacity:0;visibility:hidden;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
+}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+/* SLIDE-IN DRAWER */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1050;
+  width:min(300px,85vw);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:90px 2.5rem 3rem;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.drawer.open{transform:translateX(0)}
+.drawer a{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text);text-decoration:none;
+  padding:0.85rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s,padding-left 0.2s;
+  display:block;
+}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{
+  margin-top:auto;
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.05em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">Engineering <span>Exploration</span></div>
+<div class="nav-links"></div>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="intro.html">About us</a>
+  <a href="introduction.html">Introduction</a>
+  <a href="sus.html">Sustainability in Engineering</a>
+  <a href="exdes.html">Engineering Design</a>
+  <a href="mac.html">Mechanisms</a>
+  <a href="plat.html">Platform-Based</a>
+  <a href="eth.html">Engineering Ethics</a>
+  <a href="learn.html">Learnings</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+<div>
+  <div class="eyebrow">Module 10</div>
+  <h1>Learnings From This Course</h1>
+  <p>A reflection on what the Engineering Exploration course taught — from design thinking and problem-solving to teamwork, ethics, and the curiosity to keep exploring.</p>
+  <div class="btns">
+    <a class="btn primary" href="#overview">Explore</a>
+    <a class="btn" href="#prayog">Exhibition</a>
+  </div>
+</div>
+<div class="card">
+  <h3>Key Takeaways</h3><br>
+  <p>• Engineering Fields Overview</p>
+  <p>• Design Thinking</p>
+  <p>• Teamwork &amp; Communication</p>
+  <p>• Practical Problem-Solving</p>
+  <p>• Prayog Hemanth 2026</p>
+</div>
+</div>
+</section>
+
+<!-- COURSE OVERVIEW -->
+<section id="overview">
+<div class="container">
+  <h2 class="section-title reveal">Learning from the Course</h2>
+  <p class="section-sub reveal">A broad, hands-on journey through engineering beyond textbooks and exams.</p>
+  <div class="card reveal" style="max-width:800px">
+    <p style="line-height:1.9;color:var(--muted)">The Engineering Exploration course gave me a broad understanding of what engineering truly involves beyond textbooks and exams. It introduced me to different engineering fields, basic design thinking, problem-solving approaches, and how engineering concepts are applied in real-world situations. Through hands-on activities, discussions, and mini-projects, I learned the importance of creativity, teamwork, communication, and logical thinking. The course also helped me gain confidence in exploring new ideas and understanding how engineers approach challenges systematically. Overall, this course helped me develop curiosity, practical thinking, and a clearer perspective on my future path in engineering.</p>
+  </div>
+</div>
+</section>
+
+<!-- KEY SKILLS -->
+<section class="journey" id="skills">
+<div class="container">
+  <h2 class="section-title reveal">Skills Developed</h2>
+  <p class="section-sub reveal">Core capabilities built through the Engineering Exploration experience.</p>
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">💡</div>
+      <h3>Creativity</h3>
+      <p style="margin-top:10px;color:var(--muted)">Exploring unconventional approaches to engineering challenges and mini-projects.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🤝</div>
+      <h3>Teamwork</h3>
+      <p style="margin-top:10px;color:var(--muted)">Collaborating effectively on group activities and understanding different perspectives.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🗣</div>
+      <h3>Communication</h3>
+      <p style="margin-top:10px;color:var(--muted)">Articulating ideas clearly during discussions, presentations, and project work.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🧠</div>
+      <h3>Logical Thinking</h3>
+      <p style="margin-top:10px;color:var(--muted)">Approaching problems systematically and breaking them into solvable steps.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🔬</div>
+      <h3>Practical Thinking</h3>
+      <p style="margin-top:10px;color:var(--muted)">Translating theoretical knowledge into real-world hands-on applications.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🌍</div>
+      <h3>Curiosity</h3>
+      <p style="margin-top:10px;color:var(--muted)">Developing a genuine drive to explore new ideas and engineering fields.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- LEARNING JOURNEY -->
+<section id="journey-section">
+<div class="container">
+  <h2 class="section-title reveal">Learning Journey</h2>
+  <p class="section-sub reveal">From first principles to integrated engineering thinking.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <h3>Introduction to Engineering</h3>
+      <p>Discovered the breadth of engineering disciplines and understood what it means to think like an engineer.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Design Thinking &amp; Problem-Solving</h3>
+      <p>Learned structured approaches to understanding problems deeply before jumping to solutions.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Hands-On Activities</h3>
+      <p>Built mechanisms, explored simulations, and prototyped ideas — making abstract concepts tangible.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Ethics &amp; Sustainability</h3>
+      <p>Understood that engineering responsibility extends beyond technical output to social and environmental impact.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Confidence &amp; Perspective</h3>
+      <p>Gained confidence to explore new ideas and developed a clearer vision for a future in engineering.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PRAYOG HEMANTH -->
+<section class="journey" id="prayog">
+<div class="container">
+  <h2 class="section-title reveal">Prayog Hemanth 2026</h2>
+  <p class="section-sub reveal">Exhibition of Engineering Exploration — celebrating a decade of student success.</p>
+
+  <div class="project-grid">
+    <div class="project reveal">
+      <h3>144 Teams</h3>
+      <p style="margin-top:12px;color:var(--muted)">One hundred and forty-four teams presented course projects at the exhibition, showcasing the breadth of work done across disciplines.</p>
+    </div>
+    <div class="project reveal">
+      <h3>800+ Students</h3>
+      <p style="margin-top:12px;color:var(--muted)">Over eight hundred first-year B.E. students participated, making this one of KLE Tech's largest student showcases.</p>
+    </div>
+    <div class="project reveal">
+      <h3>13 January 2026</h3>
+      <p style="margin-top:12px;color:var(--muted)">Held at Dr. Prabhakar Kore Sports Arena — inauguration at 9:00 AM, exhibition from 9:30 AM to 1:00 PM.</p>
+    </div>
+  </div>
+
+  <div class="card reveal" style="max-width:800px;margin-top:35px">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:12px">About the Event</h3>
+    <p style="line-height:1.9;color:var(--muted)">Engineering Exploration is a flagship course introduced by KLE Technological University to empower first-year engineering students with hands-on experience in the engineering design cycle. The course is designed and delivered by multidisciplinary faculty with a focus on problem-solving, the engineering design process, prototyping, ethics, and sustainability. Prayog Hemanth 2026 marks the celebration of a decade of student success — proudly showcasing ten years of innovation, creativity, and academic excellence.</p>
+  </div>
+</div>
+</section>
+
+<div class="quote reveal">"This course helped me develop curiosity, practical thinking, and a clearer perspective on my future path in engineering."</div>
+
+<footer>© 2026 Engineering Exploration Portfolio</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+ const nav=document.querySelector("nav");
+ if(scrollY>50){
+   nav.style.boxShadow="0 4px 20px rgba(0,0,0,.05)";
+ } else {
+   nav.style.boxShadow="none";
+ }
+});
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+   if(e.isIntersecting)e.target.classList.add("active");
+ });
+},{threshold:.15});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// HAMBURGER MENU
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+
+function openMenu(){
+  burger.classList.add('open');
+  drawer.classList.add('open');
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+  burger.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  burger.classList.remove('open');
+  drawer.classList.remove('open');
+  overlay.classList.remove('show');
+  document.body.style.overflow='';
+  burger.setAttribute('aria-expanded','false');
+}
+burger.addEventListener('click',()=>{
+  drawer.classList.contains('open')?closeMenu():openMenu();
+});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu();
+});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
