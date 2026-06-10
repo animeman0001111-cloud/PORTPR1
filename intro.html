@@ -35,10 +35,6 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(circle at 10% 20%
 body::before{content:"";position:fixed;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);top:-200px;right:-200px;filter:blur(80px);animation:float1 15s ease-in-out infinite;pointer-events:none}
 body::after{content:"";position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);bottom:-200px;left:-200px;filter:blur(80px);animation:float2 18s ease-in-out infinite;pointer-events:none}
 @keyframes float1{50%{transform:translate(-80px,60px)}}@keyframes float2{50%{transform:translate(80px,-60px)}}
-nav{position:fixed;top:0;left:0;right:0;height:75px;display:flex;justify-content:space-between;align-items:center;padding:0 7%;background:rgba(250,247,242,.92);border-bottom:1px solid var(--border);z-index:1000}
-.logo{font-family:'Playfair Display',serif;font-size:1.4rem}.logo span{color:var(--accent)}
-.nav-links{display:flex;gap:28px}.nav-links a{text-decoration:none;color:var(--text);font-size:.9rem;transition:color .2s}.nav-links a:hover{color:var(--accent)}
-@media(max-width:700px){.nav-links{display:none}}
 .burger{display:none;cursor:pointer;background:none;border:none;width:38px;height:38px;position:relative;z-index:1100;padding:0}
 @media(max-width:700px){.burger{display:block}}
 .burger span{position:absolute;left:4px;right:4px;height:1.5px;background:var(--text);border-radius:2px;transition:all .35s cubic-bezier(.4,0,.2,1)}
