@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Generation – Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";position:fixed;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;pointer-events:none;
+}
+body::after{
+  content:"";position:fixed;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+  position:fixed;top:0;left:0;right:0;height:75px;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 7%;background:rgba(250,247,242,.92);
+  border-bottom:1px solid var(--border);z-index:1000;transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}}
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 7% 80px;}
+.hero-inner{
+  max-width:1200px;margin:auto;
+  display:grid;grid-template-columns:1.2fr .8fr;
+  gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5.5rem);line-height:1.05;margin-bottom:20px;}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px}
+.btn{text-decoration:none;padding:14px 24px;border-radius:6px;border:1px solid var(--border)}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card,.module,.project{background:var(--card);border:1px solid var(--border);}
+.card{padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{font-family:'Playfair Display',serif;font-size:2.6rem;margin-bottom:10px}
+.section-sub{color:var(--muted);margin-bottom:40px}
+.modules-grid,.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;}
+.module,.project{padding:30px;transition:.3s;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.05)}
+.module:hover,.project:hover{transform:translateY(-5px)}
+.num{font-size:2rem;color:var(--accent);margin-bottom:10px}
+.journey{background:rgba(255,255,255,.35)}
+.timeline{border-left:2px solid var(--accent);padding-left:30px}
+.timeline-item{margin-bottom:30px}
+.quote{text-align:center;padding:110px 7%;font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent)}
+footer{text-align:center;padding:35px;border-top:1px solid var(--border);color:var(--muted)}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+
+/* TABLE STYLES */
+.data-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.9rem}
+.data-table th{background:var(--accent);color:#fff;padding:12px 14px;text-align:left;font-weight:600}
+.data-table td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text)}
+.data-table tr:nth-child(even) td{background:rgba(155,91,62,.04)}
+.data-table tr:hover td{background:rgba(155,91,62,.08)}
+.data-table .score-pos td{background:#e8f5e9;font-weight:600}
+.data-table .score-neg td{background:#ffebee;font-weight:600}
+.data-table .score-total td{background:rgba(155,91,62,.12);font-weight:700;font-size:1rem}
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(80,60,40,.05)}
+
+/* HAMBURGER */
+.burger{display:block;cursor:pointer;background:none;border:none;width:38px;height:38px;position:relative;z-index:1100;padding:0;}
+.burger span{position:absolute;left:4px;right:4px;height:1.5px;background:var(--text);border-radius:2px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+.drawer-overlay{position:fixed;inset:0;z-index:1049;background:rgba(27,18,8,.35);opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease;}
+.drawer-overlay.show{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:1050;width:min(300px,85vw);background:var(--card);border-left:1px solid var(--border);padding:90px 2.5rem 3rem;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;gap:0;}
+.drawer.open{transform:translateX(0)}
+.drawer a{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);text-decoration:none;padding:0.85rem 0;border-bottom:1px solid var(--border);transition:color 0.2s,padding-left 0.2s;display:block;}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">Engineering <span>Exploration</span></div>
+<div class="nav-links"></div>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="intro.html">About us</a>
+  <a href="introduction.html">Introduction</a>
+  <a href="sus.html">Sustainability in Engineering</a>
+  <a href="exdes.html">Engineering Design</a>
+  <a href="mac.html">Mechanisms</a>
+  <a href="plat.html">Platform-Based</a>
+  <a href="eth.html">Engineering Ethics</a>
+  <a href="learn.html">Learnings</a>
+  <a href="prob.html">Problem Definition</a>
+  <a href="edws.html">ED Worksheet</a>
+  <a href="concgen.html">Concept Generation</a>
+  <a href="conceval.html">Concept Evaluation</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+<div>
+  <div class="eyebrow">Course Project</div>
+  <h1>Concept Generation</h1>
+  <p>Establishing system functions, building the function tree, mapping the morphological chart, and generating four distinct design concepts for the Insectronics ladybug model.</p>
+  <div class="btns">
+    <a class="btn primary" href="#functions">Functions</a>
+    <a class="btn" href="#concepts">Concepts</a>
+  </div>
+</div>
+<div class="card">
+  <h3>Activities</h3><br>
+  <p>• Establishing Functions</p>
+  <p>• Function Tree</p>
+  <p>• Morphological Chart</p>
+  <p>• Concept Sketches</p>
+  <p>• Conceptual Designs Table</p>
+</div>
+</div>
+</section>
+
+<!-- ESTABLISHING FUNCTIONS -->
+<section id="functions">
+<div class="container">
+  <h2 class="section-title reveal">Establishing Functions</h2>
+  <p class="section-sub reveal">Activity 1 — mapping what the system must do from both the user's and the designer's viewpoint.</p>
+  <div class="table-wrap reveal">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:50px">No.</th>
+          <th>Functions from User Perspective</th>
+          <th>Functions from Designer Perspective</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Move forward automatically</td><td>Program Arduino for forward motion control</td></tr>
+        <tr><td>2</td><td>Turn left or right when obstacle is detected</td><td>Implement obstacle detection algorithm</td></tr>
+        <tr><td>3</td><td>Detect obstacles in front</td><td>Indicates distance of the objects</td></tr>
+        <tr><td>4</td><td>Show object detection using red/green LED</td><td>Design LED indicator circuit and logic</td></tr>
+        <tr><td>5</td><td>Provide visual status feedback to the user</td><td>Indicates air quality</td></tr>
+        <tr><td>6</td><td>Measure room temperature</td><td>Show battery level using LED indicator</td></tr>
+        <tr><td>7</td><td>Indicate nearby objects</td><td>Process ultrasonic sensor data</td></tr>
+        <tr><td>8</td><td>—</td><td>Control servo motor for sensor rotation</td></tr>
+        <tr><td>9</td><td>—</td><td>Implement battery monitoring circuit</td></tr>
+        <tr><td>10</td><td>—</td><td>Rotate head/sensor to scan surroundings</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- FUNCTION TREE -->
+<section class="journey" id="tree">
+<div class="container">
+  <h2 class="section-title reveal">Function Tree</h2>
+  <p class="section-sub reveal">The Ladybug Insectronics Model is structured around three primary functional branches.</p>
+
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">🌿</div>
+      <h3>Environment Monitoring</h3>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Air Quality Sensing</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Temperature Sensing</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Distance Measurement</div>
+      </div>
+    </div>
+    <div class="module reveal">
+      <div class="num">🤖</div>
+      <h3>Movement &amp; Navigation</h3>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Move / Walk Forward</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Detect Obstacle</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Turn Left / Right after Detection</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Head Rotation / Sensor Direction Control</div>
+      </div>
+    </div>
+    <div class="module reveal">
+      <div class="num">💡</div>
+      <h3>System Status Indication</h3>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">LED Status for Object Detection (Red / Green)</div>
+        <div style="background:rgba(155,91,62,.07);border-radius:8px;padding:10px 14px;font-size:.9rem">Battery Level Indication (LED)</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MORPHOLOGICAL CHART -->
+<section id="morph">
+<div class="container">
+  <h2 class="section-title reveal">Morphological Chart</h2>
+  <p class="section-sub reveal">Activity 3 — for each subfunction, four alternative means of achieving it are explored and compared.</p>
+  <div class="table-wrap reveal">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:40px">S.No</th>
+          <th>Subfunction</th>
+          <th>Means 1</th>
+          <th>Means 2</th>
+          <th>Means 3</th>
+          <th>Means 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td><td>Move / Walk forward</td>
+          <td>Wheels + DC motor</td><td>Continuous servo</td><td>Gear motor</td><td>Track wheels</td>
+        </tr>
+        <tr>
+          <td>2</td><td>Turn left or right (after obstacle detection)</td>
+          <td>Differential wheel control</td><td>Servo steering</td><td>Dual DC motors</td><td>Stepper motor control</td>
+        </tr>
+        <tr>
+          <td>3</td><td>Obstacle detection</td>
+          <td>Ultrasonic sensor</td><td>IR proximity sensor</td><td>Lidar sensor</td><td>Bumper switch</td>
+        </tr>
+        <tr>
+          <td>4</td><td>Air quality sensing</td>
+          <td>Ultrasonic sensor</td><td>MQ2 gas sensor</td><td>CCS811 air quality sensor</td><td>BME680 sensor</td>
+        </tr>
+        <tr>
+          <td>5</td><td>Temperature sensing</td>
+          <td>MQ135 gas sensor</td><td>MQ2 gas sensor</td><td>CCS811 air quality sensor</td><td>BME680 sensor</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Distance measurement</td>
+          <td>Ultrasonic sensor</td><td>IR distance sensor</td><td>ToF sensor</td><td>Lidar sensor</td>
+        </tr>
+        <tr>
+          <td>7</td><td>LED status indication for object detection (Red/Green LED)</td>
+          <td>Red–Green LED pair</td><td>Bi-color LED</td><td>RGB LED</td><td>LED + buzzer</td>
+        </tr>
+        <tr>
+          <td>8</td><td>Head rotation / indication (LED indicator)</td>
+          <td>Battery level LED indicator</td><td>Voltage sensor module</td><td>LED bar graph</td><td>OLED display</td>
+        </tr>
+        <tr>
+          <td>9</td><td>Head rotation / sensor control</td>
+          <td>Servo motor</td><td>Mini stepper motor</td><td>Pan-tilt servo mount</td><td>DC geared motor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- CONCEPT SKETCHES -->
+<section class="journey" id="concepts">
+<div class="container">
+  <h2 class="section-title reveal">Concept Generation</h2>
+  <p class="section-sub reveal">Four design concepts were sketched and explored — each taking a distinct approach to the Insectronics challenge.</p>
+  <div class="project-grid">
+    <div class="project reveal">
+      <h3>Concept 1 — A</h3>
+      <p style="margin-top:12px;color:var(--muted)">Articulated legged robot inspired by the ladybug form. Uses LiDAR + ultrasonic sensors, servo motors for leg movement, MQ135 gas sensor for air quality, battery level LED indicator, red/green LEDs, and rubber grip feet.</p>
+      <p style="margin-top:10px;font-size:.85rem;color:var(--accent);font-weight:500">→ Selected Design (Pugh Score: 53)</p>
+    </div>
+    <div class="project reveal">
+      <h3>Concept 2 — B</h3>
+      <p style="margin-top:12px;color:var(--muted)">Tracked tank-style vehicle for robust terrain navigation. Uses continuous servo drive, servo steering, IR proximity sensor, MQ2 gas sensor, BME680 environment sensor, bi-color LED, voltage sensor module.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Concept 3 — C</h3>
+      <p style="margin-top:12px;color:var(--muted)">Wheeled rover/buggy design with an OLED display and gear motor drive. Features CCS811 air quality sensor, RGB LED, LED bar graph for battery, LiDAR sensor, and 4-wheel movement.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Concept 4 — D</h3>
+      <p style="margin-top:12px;color:var(--muted)">Quadruped robot with leg linkage mechanism, integrated bus architecture, LiDAR + IR sensors, stepper/servo motors, BME680 environment sensor, and rubber grip feet with battery LED indicator.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONCEPTUAL DESIGNS TABLE -->
+<section id="designtable">
+<div class="container">
+  <h2 class="section-title reveal">Conceptual Designs Comparison</h2>
+  <p class="section-sub reveal">A side-by-side breakdown of which components each concept uses for every subfunction.</p>
+  <div class="table-wrap reveal">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Subfunction</th>
+          <th>Concept 1</th>
+          <th>Concept 2</th>
+          <th>Concept 3</th>
+          <th>Concept 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Move / Walk forward</td><td>Wheels + DC motor</td><td>Continuous servo drive</td><td>Gear motor drive</td><td>Wheels + DC motor</td></tr>
+        <tr><td>2</td><td>Turn left/right (after obstacle detection)</td><td>Servo motor</td><td>Servo steering mechanism</td><td>Dual DC motor control</td><td>Differential speed control of DC motors</td></tr>
+        <tr><td>3</td><td>Obstacle detection</td><td>Ultrasonic sensors</td><td>IR proximity sensor</td><td>LiDAR sensor</td><td>IR distance sensor</td></tr>
+        <tr><td>4</td><td>Air quality sensing</td><td>MQ135 gas sensor</td><td>MQ2 gas sensor</td><td>CCS811 air quality sensor</td><td>MQ 135</td></tr>
+        <tr><td>5</td><td>Temperature sensing</td><td>BME680 sensor</td><td>BME680 sensor</td><td>BME680 sensor</td><td>DHT 11</td></tr>
+        <tr><td>6</td><td>Distance measurement</td><td>Ultrasonic sensors</td><td>IR distance sensing</td><td>ToF / LiDAR sensor</td><td>IR distance sensor</td></tr>
+        <tr><td>7</td><td>LED status indication (object detection)</td><td>Red–Green LED</td><td>Bi-color LED</td><td>RGB LED</td><td>Red or green LED</td></tr>
+        <tr><td>8</td><td>Battery level indication (LED)</td><td>Battery level LED Indicator</td><td>Voltage sensor module</td><td>LED bar graph</td><td>Red or green LED</td></tr>
+        <tr><td>9</td><td>Head rotation / sensor direction control</td><td>Servo motor</td><td>Servo motor</td><td>Servo motor</td><td>Servo motor</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<div class="quote reveal">"Every concept is a hypothesis — generation is about expanding possibilities before evaluation narrows them down."</div>
+
+<footer>© 2026 Engineering Exploration Portfolio</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+ const nav=document.querySelector("nav");
+ nav.style.boxShadow=scrollY>50?"0 4px 20px rgba(0,0,0,.05)":"none";
+});
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("active");});
+},{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+function openMenu(){burger.classList.add('open');drawer.classList.add('open');overlay.classList.add('show');document.body.style.overflow='hidden';burger.setAttribute('aria-expanded','true');}
+function closeMenu(){burger.classList.remove('open');drawer.classList.remove('open');overlay.classList.remove('show');document.body.style.overflow='';burger.setAttribute('aria-expanded','false');}
+burger.addEventListener('click',()=>{drawer.classList.contains('open')?closeMenu():openMenu();});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu();});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
