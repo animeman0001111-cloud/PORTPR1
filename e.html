@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embodied Energy – Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";position:fixed;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;pointer-events:none;
+}
+body::after{
+  content:"";position:fixed;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+  position:fixed;top:0;left:0;right:0;height:75px;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 7%;background:rgba(250,247,242,.92);
+  border-bottom:1px solid var(--border);z-index:1000;transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}}
+.hero{min-height:60vh;display:flex;align-items:center;padding:120px 7% 80px;}
+.hero-inner{
+  max-width:1200px;margin:auto;
+  display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.05;margin-bottom:20px;}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px;flex-wrap:wrap}
+.btn{text-decoration:none;padding:14px 24px;border-radius:6px;border:1px solid var(--border)}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card{background:var(--card);border:1px solid var(--border);padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{font-family:'Playfair Display',serif;font-size:2.6rem;margin-bottom:10px}
+.section-sub{color:var(--muted);margin-bottom:40px}
+
+/* Definition box */
+.definition-box{
+  background:var(--card);border:1px solid var(--border);
+  border-left:4px solid var(--accent);
+  border-radius:12px;padding:30px 35px;
+  box-shadow:0 8px 24px rgba(80,60,40,.05);
+  line-height:1.9;color:var(--muted);font-size:1.05rem;
+}
+
+/* Calc grid */
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
+.calc-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:32px;
+  box-shadow:0 10px 30px rgba(80,60,40,.06);transition:.3s;
+}
+.calc-card:hover{transform:translateY(-5px)}
+.calc-card h3{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:18px}
+.formula-list{display:flex;flex-direction:column;gap:12px}
+.formula-row{
+  display:flex;align-items:baseline;gap:12px;
+  padding:10px 14px;border-radius:9px;
+  background:rgba(155,91,62,.05);border-left:3px solid var(--accent);
+}
+.formula-row .label{
+  font-size:.75rem;font-weight:600;letter-spacing:1px;
+  text-transform:uppercase;color:var(--accent);min-width:62px;flex-shrink:0;
+}
+.formula-row .expr{font-family:'Georgia',serif;font-size:1rem;color:var(--text);line-height:1.5}
+.formula-row.result{background:rgba(155,91,62,.12);border-left:4px solid var(--accent)}
+.formula-row.result .expr{font-weight:700;font-size:1.1rem;color:var(--accent)}
+
+/* Total banner */
+.total-banner{
+  background:var(--accent);color:#fff;
+  border-radius:18px;padding:40px 45px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;
+  margin-top:35px;
+  box-shadow:0 12px 32px rgba(155,91,62,.25);
+}
+.total-banner h3{font-family:'Playfair Display',serif;font-size:1.5rem}
+.total-banner p{opacity:.85;margin-top:6px;font-size:.95rem}
+.total-value{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:700;line-height:1}
+.total-unit{font-size:1.1rem;opacity:.8;margin-top:4px}
+
+/* Components */
+.journey{background:rgba(255,255,255,.35)}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.comp-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:22px 24px;text-align:center;
+  box-shadow:0 8px 24px rgba(80,60,40,.05);transition:.3s;
+}
+.comp-card:hover{transform:translateY(-4px)}
+.comp-icon{font-size:1.8rem;margin-bottom:10px}
+.comp-card h4{font-size:.95rem;font-weight:600;margin-bottom:6px}
+.comp-card p{color:var(--muted);font-size:.85rem;line-height:1.6}
+
+/* Alternate materials */
+.alt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px}
+.alt-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:32px;
+  box-shadow:0 10px 30px rgba(80,60,40,.06);transition:.3s;
+}
+.alt-card:hover{transform:translateY(-5px)}
+.alt-card h3{font-family:'Playfair Display',serif;font-size:1.25rem;margin-bottom:14px}
+.alt-card .original{
+  font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;display:block;
+}
+.alt-item{
+  padding:10px 0;border-bottom:1px solid var(--border);
+  color:var(--muted);font-size:.9rem;line-height:1.7;
+}
+.alt-item:last-child{border-bottom:none;padding-bottom:0}
+.alt-item strong{color:var(--text);font-weight:600}
+
+.quote{text-align:center;padding:110px 7%;font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent)}
+footer{text-align:center;padding:35px;border-top:1px solid var(--border);color:var(--muted)}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+
+/* HAMBURGER */
+.burger{display:block;cursor:pointer;background:none;border:none;width:38px;height:38px;position:relative;z-index:1100;padding:0}
+.burger span{position:absolute;left:4px;right:4px;height:1.5px;background:var(--text);border-radius:2px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1)}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+.drawer-overlay{position:fixed;inset:0;z-index:1049;background:rgba(27,18,8,.35);opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:1050;width:min(300px,85vw);background:var(--card);border-left:1px solid var(--border);padding:90px 2.5rem 3rem;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;gap:0}
+.drawer.open{transform:translateX(0)}
+.drawer a{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);text-decoration:none;padding:0.85rem 0;border-bottom:1px solid var(--border);transition:color 0.2s,padding-left 0.2s;display:block}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{margin-top:auto;font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Engineering <span>Exploration</span></div>
+  <div class="nav-links"></div>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="intro.html">About us</a>
+  <a href="introduction.html">Introdution</a>
+  <a href="sus.html">Sustainability in Engineering</a>
+  <a href="exdes.html">Engineering Design</a>
+  <a href="mac.html">Mechanisms</a>
+  <a href="plat.html">Platform-Based</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Course Project · Sustainability</div>
+      <h1>Embodied Energy</h1>
+      <p>Sustainability calculations for the LadyBug robot — quantifying the hidden energy cost of every component and exploring lower-impact alternatives.</p>
+      <div class="btns">
+        <a class="btn primary" href="#calculations">Calculations</a>
+        <a class="btn" href="#alternates">Alternate Materials</a>
+      </div>
+    </div>
+    <div class="card reveal">
+      <h3>At a Glance</h3><br>
+      <p>• Formula: E = m × e</p>
+      <p>• 4 components calculated</p>
+      <p>• Initial total: 24.9 MJ</p>
+      <p>• Revised total: 25.2 MJ</p>
+      <p>• 5 alternate material paths</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEFINITION -->
+<section id="definition">
+  <div class="container">
+    <h2 class="section-title reveal">What Is Embodied Energy?</h2>
+    <p class="section-sub reveal">The concept behind our sustainability analysis.</p>
+    <div class="definition-box reveal">
+      Embodied energy is the total amount of energy required to produce a product or structure, starting from the extraction of raw materials, through manufacturing, processing, transportation, and assembly. It represents the hidden energy cost involved before the product is actually used. Understanding embodied energy helps engineers evaluate environmental impact, compare materials, and design more sustainable and energy-efficient systems.
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATIONS -->
+<section id="calculations">
+  <div class="container">
+    <h2 class="section-title reveal">Sustainability Calculations</h2>
+    <p class="section-sub reveal">Energy calculation for each component using the formula E = m × e (mass × energy intensity).</p>
+    <div class="calc-grid">
+
+      <div class="calc-card reveal">
+        <h3>3D Printed Body</h3>
+        <div class="formula-list">
+          <div class="formula-row"><span class="label">Formula</span><span class="expr">E = m × e</span></div>
+          <div class="formula-row"><span class="label">Values</span><span class="expr">E = 0.15 × 90</span></div>
+          <div class="formula-row result"><span class="label">Result</span><span class="expr">E = 13.5 MJ</span></div>
+        </div>
+      </div>
+
+      <div class="calc-card reveal">
+        <h3>BO Motor (60 rpm) × 2</h3>
+        <div class="formula-list">
+          <div class="formula-row"><span class="label">Per Motor</span><span class="expr">E = 0.03 × 70 = 2.1 MJ</span></div>
+          <div class="formula-row"><span class="label">For Two</span><span class="expr">E = 2 × 2.1</span></div>
+          <div class="formula-row result"><span class="label">Result</span><span class="expr">E = 4.2 MJ</span></div>
+        </div>
+      </div>
+
+      <div class="calc-card reveal">
+        <h3>L298N Motor Controller</h3>
+        <div class="formula-list">
+          <div class="formula-row"><span class="label">Formula</span><span class="expr">E = m × e</span></div>
+          <div class="formula-row"><span class="label">Values</span><span class="expr">E = 0.05 × 120</span></div>
+          <div class="formula-row result"><span class="label">Result</span><span class="expr">E = 6 MJ</span></div>
+        </div>
+      </div>
+
+      <div class="calc-card reveal">
+        <h3>IR Sensor</h3>
+        <div class="formula-list">
+          <div class="formula-row"><span class="label">Formula</span><span class="expr">E = m × e</span></div>
+          <div class="formula-row"><span class="label">Values</span><span class="expr">E = 0.01 × 120</span></div>
+          <div class="formula-row result"><span class="label">Result</span><span class="expr">E = 1.2 MJ</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Total -->
+    <div class="total-banner reveal">
+      <div>
+        <h3>Total Embodied Energy</h3>
+        <p>13.5 + 4.2 + 6 + 1.2 = 24.9 MJ &nbsp;|&nbsp; Revised with ESP32: 25.2 MJ</p>
+      </div>
+      <div style="text-align:right">
+        <div class="total-value">25.2</div>
+        <div class="total-unit">MJ (revised)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTS USED -->
+<section class="journey" id="components">
+  <div class="container">
+    <h2 class="section-title reveal">Components Used</h2>
+    <p class="section-sub reveal">The four key hardware components whose embodied energy was calculated.</p>
+    <div class="comp-grid">
+      <div class="comp-card reveal">
+        <div class="comp-icon">⚙️</div>
+        <h4>BO Motor</h4>
+        <p>60 rpm gear motor — two units used for left and right drive.</p>
+      </div>
+      <div class="comp-card reveal">
+        <div class="comp-icon">🔌</div>
+        <h4>L298N Motor Driver</h4>
+        <p>H-bridge motor driver IC controlling both BO motors.</p>
+      </div>
+      <div class="comp-card reveal">
+        <div class="comp-icon">📡</div>
+        <h4>IR Sensor</h4>
+        <p>Infrared obstacle detection sensor for autonomous navigation.</p>
+      </div>
+      <div class="comp-card reveal">
+        <div class="comp-icon">🧠</div>
+        <h4>ESP32 Controller</h4>
+        <p>Wi-Fi enabled microcontroller — added in the revised calculation, increasing total to 25.2 MJ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALTERNATE MATERIALS -->
+<section id="alternates">
+  <div class="container">
+    <h2 class="section-title reveal">Alternate Materials</h2>
+    <p class="section-sub reveal">Lower-embodied-energy alternatives for each component to improve sustainability.</p>
+    <div class="alt-grid">
+
+      <div class="alt-card reveal">
+        <span class="original">01 · 3D Printed Body (PLA)</span>
+        <h3>Body Alternatives</h3>
+        <div class="alt-item"><strong>Recycled PLA / Recycled Plastic Sheets</strong> — Uses less energy than virgin PLA and reduces plastic waste.</div>
+        <div class="alt-item"><strong>Lightweight Cardboard / Corrugated Sheet (laminated)</strong> — Very low embodied energy, biodegradable, suitable for indoor models.</div>
+        <div class="alt-item"><strong>Thin Plywood / MDF</strong> — Lower embodied energy than plastics and easy to fabricate.</div>
+      </div>
+
+      <div class="alt-card reveal">
+        <span class="original">02 · BO Motor (60 rpm)</span>
+        <h3>Motor Alternatives</h3>
+        <div class="alt-item"><strong>Low-power Micro DC Motors</strong> — Smaller size, lower material use, hence reduced embodied energy.</div>
+        <div class="alt-item"><strong>Gear Motor with Plastic Gearbox</strong> — Plastic gears have lower embodied energy than metal ones.</div>
+      </div>
+
+      <div class="alt-card reveal">
+        <span class="original">03 · L298N Motor Driver</span>
+        <h3>Driver Alternatives</h3>
+        <div class="alt-item"><strong>L293D Motor Driver IC</strong> — Smaller IC, less material usage, lower embodied energy.</div>
+        <div class="alt-item"><strong>Single-channel Motor Driver Module</strong> — If only one motor is needed, material and energy use is reduced.</div>
+      </div>
+
+      <div class="alt-card reveal">
+        <span class="original">04 · IR Sensor</span>
+        <h3>Sensor Alternatives</h3>
+        <div class="alt-item"><strong>Ultrasonic Sensor (shared module use)</strong> — One sensor can cover more area, reducing total components.</div>
+        <div class="alt-item"><strong>Reused / Salvaged IR Sensor</strong> — Reusing components almost eliminates new embodied energy.</div>
+      </div>
+
+      <div class="alt-card reveal">
+        <span class="original">05 · ESP32 Controller</span>
+        <h3>Controller Alternatives</h3>
+        <div class="alt-item"><strong>ESP8266 / Arduino Nano</strong> — Smaller board, fewer materials, lower embodied energy when Wi-Fi is not required.</div>
+        <div class="alt-item"><strong>Reused Development Board</strong> — Best option for sustainability — no new manufacturing energy required.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="quote reveal">"Sustainable design starts before the first component is made."</div>
+
+<footer>© 2026 Engineering Exploration Portfolio</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+  const nav=document.querySelector("nav");
+  nav.style.boxShadow=scrollY>50?"0 4px 20px rgba(0,0,0,.05)":"none";
+});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("active")});
+},{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+function openMenu(){burger.classList.add('open');drawer.classList.add('open');overlay.classList.add('show');document.body.style.overflow='hidden';burger.setAttribute('aria-expanded','true')}
+function closeMenu(){burger.classList.remove('open');drawer.classList.remove('open');overlay.classList.remove('show');document.body.style.overflow='';burger.setAttribute('aria-expanded','false')}
+burger.addEventListener('click',()=>{drawer.classList.contains('open')?closeMenu():openMenu()});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu()});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
