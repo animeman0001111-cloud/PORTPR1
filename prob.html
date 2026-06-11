@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem Definition – Engineering Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ee;
+  --section:#efe8df;
+  --card:#fffdfb;
+  --text:#1b1b1b;
+  --muted:#666;
+  --accent:#9b5b3e;
+  --border:#ddd2c5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+  radial-gradient(circle at 10% 20%, rgba(255,220,190,.55), transparent 30%),
+  radial-gradient(circle at 85% 15%, rgba(220,235,255,.45), transparent 30%),
+  radial-gradient(circle at 70% 80%, rgba(220,255,230,.35), transparent 30%),
+  linear-gradient(135deg,#fffaf5,#fff3e8,#fef7dc,#eef8ee,#eef7ff,#f7f1ff);
+  background-size:100% 100%,100% 100%,100% 100%,400% 400%;
+  animation:warmFlow 24s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+@keyframes warmFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+body::before{
+  content:"";
+  position:fixed;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(155,91,62,.18),transparent 70%);
+  top:-200px;right:-200px;
+  filter:blur(80px);
+  animation:float1 15s ease-in-out infinite;
+  pointer-events:none;
+}
+body::after{
+  content:"";
+  position:fixed;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(220,190,150,.18),transparent 70%);
+  bottom:-200px;left:-200px;
+  filter:blur(80px);
+  animation:float2 18s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes float1{50%{transform:translate(-80px,60px)}}
+@keyframes float2{50%{transform:translate(80px,-60px)}}
+
+nav{
+ position:fixed;top:0;left:0;right:0;height:75px;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:0 7%;
+ background:rgba(250,247,242,.92);
+ border-bottom:1px solid var(--border);
+ z-index:1000;
+ transition:.3s;
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem}
+.logo span{color:var(--accent)}
+.nav-links{display:none}
+
+@media(max-width:900px){
+ .hero-inner{grid-template-columns:1fr}
+}
+.hero{
+ min-height:100vh;
+ display:flex;align-items:center;
+ padding:120px 7% 80px;
+}
+.hero-inner{
+ max-width:1200px;margin:auto;
+ display:grid;grid-template-columns:1.2fr .8fr;
+ gap:60px;align-items:center;
+}
+.eyebrow{color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:15px}
+h1{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(3rem,6vw,5.5rem);
+ line-height:1.05;margin-bottom:20px;
+}
+.hero p{line-height:1.9;color:var(--muted)}
+.btns{margin-top:30px;display:flex;gap:15px}
+.btn{
+ text-decoration:none;padding:14px 24px;border-radius:6px;
+ border:1px solid var(--border)
+}
+.btn.primary{background:var(--accent);color:#fff;border:none}
+.card,.module,.project{
+ background:var(--card);
+ border:1px solid var(--border);
+}
+.card{padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+section{padding:90px 7%}
+.container{max-width:1200px;margin:auto}
+.section-title{
+ font-family:'Playfair Display',serif;
+ font-size:2.6rem;margin-bottom:10px
+}
+.section-sub{color:var(--muted);margin-bottom:40px}
+.modules-grid,.project-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:25px;
+}
+.module,.project{padding:30px;transition:.3s;border-radius:18px;box-shadow:0 10px 30px rgba(80,60,40,.05)}
+.module:hover,.project:hover{transform:translateY(-5px)}
+.num{font-size:2rem;color:var(--accent);margin-bottom:10px}
+.journey{background:rgba(255,255,255,.35)}
+.timeline{border-left:2px solid var(--accent);padding-left:30px}
+.timeline-item{margin-bottom:30px}
+.quote{
+ text-align:center;padding:110px 7%;
+ font-family:'Playfair Display',serif;
+ font-size:2rem;color:var(--accent)
+}
+footer{
+ text-align:center;padding:35px;
+ border-top:1px solid var(--border);color:var(--muted)
+}
+.reveal{opacity:0;transform:translateY(30px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+/* HAMBURGER BUTTON */
+.burger{
+  display:block;
+  cursor:pointer;
+  background:none;
+  border:none;
+  width:38px;height:38px;
+  position:relative;
+  z-index:1100;
+  padding:0;
+}
+.burger span{
+  position:absolute;
+  left:4px;right:4px;
+  height:1.5px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.burger span:nth-child(1){top:10px}
+.burger span:nth-child(2){top:18px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:18px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;left:50%;right:50%}
+.burger.open span:nth-child(3){top:18px;transform:rotate(-45deg)}
+
+/* OVERLAY */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1049;
+  background:rgba(27,18,8,.35);
+  opacity:0;visibility:hidden;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
+}
+.drawer-overlay.show{opacity:1;visibility:visible}
+
+/* SLIDE-IN DRAWER */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1050;
+  width:min(300px,85vw);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:90px 2.5rem 3rem;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.drawer.open{transform:translateX(0)}
+.drawer a{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text);text-decoration:none;
+  padding:0.85rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s,padding-left 0.2s;
+  display:block;
+}
+.drawer a:last-of-type{border-bottom:none}
+.drawer a:hover{color:var(--accent);padding-left:10px}
+.drawer-footer{
+  margin-top:auto;
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.05em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">Engineering <span>Exploration</span></div>
+<div class="nav-links"></div>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="intro.html">About us</a>
+  <a href="introduction.html">Introduction</a>
+  <a href="sus.html">Sustainability in Engineering</a>
+  <a href="exdes.html">Engineering Design</a>
+  <a href="mac.html">Mechanisms</a>
+  <a href="plat.html">Platform-Based</a>
+  <a href="eth.html">Engineering Ethics</a>
+  <a href="learn.html">Learnings</a>
+  <a href="prob.html">Problem Definition</a>
+  <a href="edws.html">ED Worksheet</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+<div>
+  <div class="eyebrow">Course Project</div>
+  <h1>Problem Definition</h1>
+  <p>Designing a ladybug-inspired Insectronics system for safe indoor navigation, obstacle avoidance, and environmental awareness.</p>
+  <div class="btns">
+    <a class="btn primary" href="#v1">Version 1.1</a>
+    <a class="btn" href="#v3">Final Version</a>
+  </div>
+</div>
+<div class="card">
+  <h3>Design Constraints 🐞</h3><br>
+  <p>• Size: 18–20 cm</p>
+  <p>• Weight: &lt; 2 kg</p>
+  <p>• Voltage: 5–12 V</p>
+  <p>• Budget: ≤ ₹5,000</p>
+  <p>• Application: Indoor use</p>
+</div>
+</div>
+</section>
+
+<!-- VERSION 1.1 -->
+<section id="v1">
+<div class="container">
+  <h2 class="section-title reveal">Version 1.1</h2>
+  <p class="section-sub reveal">The initial problem statement establishing the Insectronics ladybug concept.</p>
+  <div class="card reveal" style="max-width:800px;margin-bottom:35px">
+    <p style="line-height:1.9;color:var(--muted)">Design a ladybug-inspired model as an Insectronics system to achieve safe indoor navigation and basic environmental awareness with clear visual indication of object detection and battery status using LEDs. The model is limited to a compact size of 18–20 cm, a total weight below 2 kg, an operating voltage range of 5–12 V, and a total cost not exceeding ₹5,000, ensuring energy efficiency, affordability, and suitability for indoor use. The system moves forward, senses obstacles and turns left or right to avoid collisions, monitors temperature and air quality, and provides system status indication through LEDs, rotates its head or sensor unit to scan surroundings, measures the distance to nearby objects, and displays battery level information using an LED indicator.</p>
+  </div>
+
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">🚗</div>
+      <h3>Autonomous Navigation</h3>
+      <p style="margin-top:10px;color:var(--muted)">Moves forward independently and turns left or right to avoid collisions with obstacles.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">📡</div>
+      <h3>Sensor Scanning</h3>
+      <p style="margin-top:10px;color:var(--muted)">Rotates its head or sensor unit to scan surroundings and measures distance to nearby objects.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🌡</div>
+      <h3>Environmental Monitoring</h3>
+      <p style="margin-top:10px;color:var(--muted)">Monitors temperature and air quality for basic environmental awareness.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">💡</div>
+      <h3>LED Indicators</h3>
+      <p style="margin-top:10px;color:var(--muted)">Provides clear visual feedback for object detection and displays battery level information.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- OBJECTIVES -->
+<section class="journey" id="objectives">
+<div class="container">
+  <h2 class="section-title reveal">List of Objectives</h2>
+  <p class="section-sub reveal">What the Insectronics system is designed to achieve.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <h3>Reduce Crop Damage</h3>
+      <p>Detect and monitor harmful insects in farms to help reduce agricultural losses for small and medium-scale farmers.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Wide-Area Scanning</h3>
+      <p>Allow the robot to scan a wider area for objects by rotating its sensor unit.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Instant Status Feedback</h3>
+      <p>Quickly inform users about object detection and battery status through clear LED indications.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Safe Collision Avoidance</h3>
+      <p>Help the robot detect and avoid obstacles, enabling safe and reliable autonomous movement.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Continuous Monitoring</h3>
+      <p>Monitor surroundings continuously without requiring manual control or constant user input.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Energy Efficiency</h3>
+      <p>Allow longer operation with limited battery power through optimised low-power design.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>General Accessibility</h3>
+      <p>Make the system accessible for general users and small-scale applications within a ₹5,000 budget.</p>
+    </div>
+    <div class="timeline-item reveal">
+      <h3>Future Upgradability</h3>
+      <p>Support future upgrades to improve insect detection accuracy and add advanced smart features.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- VERSION 1.2 -->
+<section id="v2">
+<div class="container">
+  <h2 class="section-title reveal">Version 1.2</h2>
+  <p class="section-sub reveal">A refined and more detailed problem statement incorporating objectives and constraints.</p>
+  <div class="card reveal" style="max-width:800px;margin-bottom:35px">
+    <p style="line-height:1.9;color:var(--muted)">To develop a compact ladybug-inspired Insectronics model capable of safe indoor navigation and basic environmental monitoring. The system is designed to autonomously move forward, detect obstacles, and change direction to prevent collisions while maintaining visual feedback through LEDs for object detection and battery status. Operating within a size of 18–20 cm, a weight under 2 kg, a voltage range of 5–12 V, and a cost limit of ₹5,000, the model emphasises energy efficiency, affordability, and indoor usability. Additional features include head or sensor rotation for environmental scanning, distance measurement to nearby objects, temperature and air quality monitoring, and LED-based battery level indication.</p>
+  </div>
+
+  <h3 class="section-title reveal" style="font-size:1.8rem;margin-top:20px">List of Constraints</h3>
+  <p class="section-sub reveal">Design boundaries and operational requirements the system must respect.</p>
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="num">🐛</div>
+      <h3>Insect Focus</h3>
+      <p style="margin-top:10px;color:var(--muted)">Detection limited to harmful insects only — such as locusts and beetles — not all insect types.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">☀</div>
+      <h3>Solar Power</h3>
+      <p style="margin-top:10px;color:var(--muted)">Powered by solar energy to suit farm environments where reliable electricity may not be available.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🌾</div>
+      <h3>Outdoor Field Use</h3>
+      <p style="margin-top:10px;color:var(--muted)">Designed for deployment in outdoor farm fields, requiring durability and weather resilience.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">💰</div>
+      <h3>Farmer Affordability</h3>
+      <p style="margin-top:10px;color:var(--muted)">Must be affordable for small and medium-scale farmers, keeping total cost within ₹5,000.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">⏳</div>
+      <h3>3–5 Year Lifespan</h3>
+      <p style="margin-top:10px;color:var(--muted)">Expected to operate reliably for at least three to five years with minimal degradation.</p>
+    </div>
+    <div class="module reveal">
+      <div class="num">🔧</div>
+      <h3>Low Maintenance</h3>
+      <p style="margin-top:10px;color:var(--muted)">Requires minimal servicing — preferably maintenance only once every six months.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- VERSION 1.3 -->
+<section class="journey" id="v3">
+<div class="container">
+  <h2 class="section-title reveal">Version 1.3 — Final</h2>
+  <p class="section-sub reveal">The complete, finalised problem definition for the Insectronics model.</p>
+  <div class="card reveal" style="max-width:800px;margin-bottom:35px">
+    <p style="line-height:1.9;color:var(--muted)">The objective is to design and implement a ladybug-inspired Insectronics system that enables intelligent indoor movement and environmental awareness. The model navigates autonomously by moving forward, sensing obstacles, and turning left or right to avoid collisions, while providing clear LED indications for obstacle detection and battery status. Constrained to a compact form factor of 18–20 cm, a total weight below 2 kg, an operating voltage of 5–12 V, and a maximum budget of ₹5,000, the system focuses on low power consumption and cost-effectiveness. It also incorporates a rotating sensor mechanism for surrounding scans, distance measurement, temperature and air quality sensing, and real-time battery level display using LEDs.</p>
+  </div>
+
+  <h3 class="section-title reveal" style="font-size:1.8rem;margin-top:20px">List of Functions</h3>
+  <p class="section-sub reveal">Key functional capabilities the completed system must provide.</p>
+  <div class="project-grid">
+    <div class="project reveal">
+      <h3>Detect &amp; Act</h3>
+      <p style="margin-top:12px;color:var(--muted)">The system detects harmful insects first, then automatically activates a safe, appropriate control response.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Smart Alerts</h3>
+      <p style="margin-top:12px;color:var(--muted)">Sends real-time alerts via SMS or a mobile application when threats or anomalies are detected.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Manual Override</h3>
+      <p style="margin-top:12px;color:var(--muted)">Farmers retain a manual override option to take direct control of the robot at any time.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Multi-Mode Alarms</h3>
+      <p style="margin-top:12px;color:var(--muted)">Issues both sound alarms and mobile push notifications to ensure users are always informed.</p>
+    </div>
+    <div class="project reveal">
+      <h3>Location Tracking</h3>
+      <p style="margin-top:12px;color:var(--muted)">Basic location tracking allows users to monitor the robot's position within the field or space.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="quote reveal">"Design a ladybug-inspired model — compact, intelligent, and aware of its environment."</div>
+
+<footer>© 2026 Engineering Exploration Portfolio</footer>
+
+<script>
+window.addEventListener("scroll",()=>{
+ const nav=document.querySelector("nav");
+ if(scrollY>50){
+   nav.style.boxShadow="0 4px 20px rgba(0,0,0,.05)";
+ } else {
+   nav.style.boxShadow="none";
+ }
+});
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+   if(e.isIntersecting)e.target.classList.add("active");
+ });
+},{threshold:.15});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// HAMBURGER MENU
+const burger=document.getElementById('burger');
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+
+function openMenu(){
+  burger.classList.add('open');
+  drawer.classList.add('open');
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+  burger.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  burger.classList.remove('open');
+  drawer.classList.remove('open');
+  overlay.classList.remove('show');
+  document.body.style.overflow='';
+  burger.setAttribute('aria-expanded','false');
+}
+burger.addEventListener('click',()=>{
+  drawer.classList.contains('open')?closeMenu():openMenu();
+});
+overlay.addEventListener('click',closeMenu);
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open'))closeMenu();
+});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+</script>
+</body>
+</html>
