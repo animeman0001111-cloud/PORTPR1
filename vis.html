@@ -250,10 +250,12 @@ footer{
   width:min(300px,85vw);
   background:var(--card);
   border-left:1px solid var(--border);
-  padding:90px 2.5rem 3rem;
+  padding:90px 2.5rem 2rem;    /* slight bottom padding */
   transform:translateX(100%);
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
   display:flex;flex-direction:column;gap:0;
+  overflow-y:auto;             /* ← enables scrolling */
+  max-height:100vh;            /* ← caps height to viewport */
 }
 .drawer.open{transform:translateX(0)}
 .drawer a{
